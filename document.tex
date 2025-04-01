@@ -1,0 +1,105 @@
+\documentclass[10pt,twocolumn]{article}
+
+% use the oxycomps style file
+\usepackage{oxycomps}
+
+% usage: \fixme[comments describing issue]{text to be fixed}
+% define \fixme as not doing anything special
+\newcommand{\fixme}[2][]{#2}
+% overwrite it so it shows up as red
+\renewcommand{\fixme}[2][]{\textcolor{red}{#2}}
+% overwrite it again so related text shows as footnotes
+%\renewcommand{\fixme}[2][]{\textcolor{red}{#2\footnote{#1}}}
+
+% read references.bib for the bibtex data
+\bibliographystyle{plain}
+\bibliography{references}
+
+% include metadata in the generated pdf file
+\pdfinfo{
+    /Title (Toward Digital Well-being: A Hybrid Model for Reducing Screen Time via iOS APIs)
+    /Author (Cael McDermott)
+}
+
+% set the title and author information
+\title{Toward Digital Well-being: A Hybrid Model for Reducing Screen Time via iOS APIs}
+\author{Cael McDermott}
+\affiliation{Occidental College}
+\email{mcdermottc@oxy.edu}
+
+\begin{document}
+
+\maketitle
+
+\section{Technical Background}
+
+Cell phone popularity has skyrocketed in recent years, with over 5.6 billion people using smartphones, 5 billion of whom are active on social media. With this rise in cellphone use has come a rise in addiction, with the average phone daily screen time reaching 3 hours and 46 minutes.\cite{DigitalMediaMentalHealth} Factor all types of screens, and that number increases to 6 hours and 40 minutes. Over the course of a year, this amounts to 56 days and 12 hours spent looking at a screen. Factor in getting eight hours of sleep each night, and 365 days each year dwindles to just 142 days per year not spent sleeping or looking at a screen. \cite{ScreentimeMentalHealth}. 
+
+While there is verifiable scientific literature highlighting the benefits of social media, this overarching trend has led to widespread mental health concerns. Research suggests that prolonged screen time negatively impacts both physical and mental health.\cite{ScreenTimeSleepQuality} Studies have found that excessive cellphone use is a significant predictor of depression in emerging adults, with overuse being associated with higher levels of stress, depressive mood, anxiety, and loneliness.\cite{ScreenTimeDepression}
+
+This addiction is not accidental; tech companies intentionally design their platforms to maximize engagement. By hiring psychiatrists and engineers, they have developed features that exploit human psychology, ensuring users stay on their platforms as long as possible. Many follow the Hook Model, which keeps users engaged through triggers, actions, rewards, and investments.
+
+\section{Prior Work}
+
+While the previous section outlined different algorithmic approaches to screen time reduction, it remains essential to examine how these strategies have been implemented in real-world applications and research studies. Several screen time management apps, such as Google’s Digital Wellbeing, Apple’s Screen Time, and third-party tools like Forest and StayFree, have attempted to address this issue through various intervention methods.\cite{SmartphoneUseDepression} However, despite their widespread use, smartphone addiction remains a persistent problem, suggesting that these approaches may have key limitations. \cite{ReductionEqualsMentalHealthNoLooker}
+
+In one master’s thesis, eight subjects were asked to use Apple’s Screen Time to help minimize their phone usage, and five of the eight reported positive effects.\cite{DigitalDetox} These users found that screen time monitoring increased their awareness of excessive phone use, leading to self-regulation. However, three participants reported that the tool was not effective in reducing their overall screen time, citing difficulty in adhering to restrictions and the ease of bypassing limits as primary concerns.
+
+A similar study evaluating Google’s Digital Wellbeing found that while users appreciated the ability to track their app usage, many found the system’s intervention methods to be too passive. \cite{ScreenPhysicalMentalWellbeing}Digital Wellbeing allows users to set app timers, receive focus mode notifications, and view detailed usage reports, but it does not enforce restrictions strictly. Research by Purohit et al. (2020) suggests that users often ignore or dismiss nudges when they are not backed by stronger deterrents, leading to limited long-term impact on behavior. \cite{PhoneAddictionAnxiety}
+
+Beyond built-in screen time tracking tools, third-party applications such as Forest and StayFree have explored alternative intervention models. Forest gamifies screen time reduction by allowing users to plant virtual trees that grow when they stay off their phones.\cite{ScreenTimeDepression} When users access their phones whilst Forest is active, these trees wither and die, further incentivizing users to keep off their phone. This reward-based system has been shown to be effective for some users who find motivation in visual progress. However, studies suggest that habit-forming nudges work best in the short term, while long-term behavioral change requires more adaptive interventions. \cite{ScreenTimeInsomnia}StayFree, on the other hand, takes a stricter approach by incorporating hard blocking features, but this has been met with mixed reception, as users often disable restrictions when they feel frustrated or inconvenienced.
+
+While these applications demonstrate that various intervention models exist, their mixed effectiveness highlights the need for a more adaptive approach. Some studies suggest that a hybrid model combining nudging, gamification, and adaptive AI-based interventions could improve long-term user engagement. \cite{DigitalDetoxWellbeing}This project addresses gaps in existing solutions by implementing a dynamic intervention system designed to adapt to user behavior, striking a balance between effectiveness and user autonomy.
+
+\subsection{Project Relevance}
+My screen time management/restriction app will be valuable to anyone who has realized they spend too much time on their phone and wants a tool to aid in their recovery from cellphone and internet addiction. By combining elements of both nudging and restriction, the app aims to provide an adaptive and sustainable approach to reducing excessive screen time.
+
+\subsection{Technical APIs and Systems}
+Android dominates the mobile market, with 83 percent of cellphone users relying on Android devices.\cite{AndroidAPI}.  The operating system provides built-in APIs that allow developers to analyze user behavior and activity patterns. Two key APIs used for screen time monitoring are UsageStatsManager and Activity Recognition API.
+UsageStatsManager collects app usage history, measures session durations, and tracks foreground activity, helping apps determine how long users engage with different applications.
+Activity Recognition API leverages built-in sensors, such as accelerometers, GPS, and gyroscopes, to detect user movement patterns (e.g., walking, running, or remaining stationary).\cite{ScreenTimeInsomnia}
+Additionally, Android's hardware sensors can track physical activity and detect certain physiological states, providing deeper insights into user behavior.
+However, newer versions of Android have begun restricting access to these APIs due to privacy concerns. As a result, developers must now request explicit user permissions, and real-time tracking capabilities are increasingly limited to protect user data.
+
+Meanwhile, Apple’s ecosystem, while more closed than Android, offers developers the Screen Time API through the DeviceActivity and FamilyControls frameworks.\cite{AppleAPI}.  These tools allow developers to monitor device and app usage with a high level of accuracy and deep integration into iOS’s built-in reporting systems. The API provides access to metrics such as total screen time, time spent per app, and category breakdowns (e.g., social, productivity, games), all of which can be filtered by day, week, or usage session. \cite{AppleAPI}This ease of use is particularly appealing for this project — and considering I own a Mac and iPhone, it is also highly convenient. Notably, Apple’s 99 dollar developer fee only applies to app publication, not development, so it will not present a roadblock during the build phase.
+
+While Apple places strong emphasis on user privacy, the Screen Time API still allows for app-based monitoring and limited enforcement, such as creating usage limits, scheduling downtime, or prompting interventions when a user exceeds certain thresholds. However, these capabilities often require explicit user authorization and are significantly limited outside of managed device contexts, such as parental control or enterprise environments. As a result, although the data provided is rich, implementing fine-grained behavioral interventions demands careful attention to permissions and user experience design.
+
+Because the iOS API is deeply embedded within system settings, it offers more consistency and reliability than scraping screen time data through informal means. It also integrates seamlessly with Apple’s notification infrastructure, making it possible to deliver real-time nudges or alerts when limits are crossed.\cite{ScreenTimeTeens}
+
+A notable limitation, however, is that hardblocking is essentially unsupported on Apple devices. The operating system does not permit third-party apps to block access to other apps entirely, meaning that implementing strict usage prevention would be far more difficult — if not impossible — on iOS compared to Android.
+
+\section{Methods}
+
+This project will implement a rule-based intervention system that combines screen time tracking, reminder notifications, and gamification to help users reduce excessive smartphone usage. The system will use Apple’s Screen Time API to monitor app usage and trigger interventions based on predefined thresholds. Users will receive reminders after exceeding set screen time limits, and engagement will be encouraged through a reward-based gamification system.
+
+Apple’s Screen Time API provides access to app usage statistics, device activity, and screen time reports. Using this API, the system can track the amount of time users spend on specific apps and trigger interventions when limits are exceeded. The app will also utilize UserNotifications framework to send reminder notifications at scheduled intervals. \cite{ScreenTimeAnxiety}
+
+To refine the intervention system, this project will analyze existing research on screen time interventions and digital well-being apps to determine the most effective implementation of three key hyperparameters:
+
+    Screen Time Limits – Fixed limits (e.g., 60, 90, or 120 minutes) vs. user-defined custom limits.
+
+    Reminder Frequency – Scheduled notifications (e.g., every 5, 15, 30, or 60 minutes) based on prior research findings.
+
+    Gamification Rewards – Comparing streak-based rewards vs. achievement-based incentives to encourage behavior change.
+
+By reviewing prior research and leveraging Apple’s Screen Time API, this project aims to identify best practices for balancing effectiveness and user autonomy in screen time reduction interventions. A small sample size will likely be used to conduct testing, and existing studies will inform the app's recommended settings.
+
+
+\section{Metrics}
+
+Previous studies have measured success using a variety of behavioral and subjective metrics. Common metrics include daily screen time reduction, user engagement with app features, and survey-based self-reports of satisfaction or perceived behavior change. For instance, Dey et al. (2022) emphasized the importance of accuracy in screen time tracking for supporting behavior-based interventions. Other studies, such as those cited in Forest and Digital Wellbeing evaluations, rely on short-term usage changes or app retention rates over multiple weeks. \cite{ScreentimeMentalHealth}. 
+
+In this project, key metrics will include:
+
+Screen time change (before and after app use),
+
+Reminder response rate (how often users act on a prompt),
+
+Reward engagement (e.g., how frequently users earn or redeem points).
+
+A unique proposed metric is the rate of user setting adjustments over time (e.g., increasing/decreasing limits), which may reflect greater self-awareness and ownership over screen time goals. This metric is not commonly studied but could provide new insights into long-term behavioral change.
+
+\printbibliography
+
+\end{document}
